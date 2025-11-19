@@ -1,0 +1,4 @@
+# API Keys and Environment Variables
+.env
+config.js
+api_keys.txt
