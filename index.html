@@ -3,22 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Path Finder</title>
     <link rel="stylesheet" href="./styles/styles.css" />
-    <title>Career Path</title>
   </head>
   <body>
-    <header>
-      <div class="title">
-        <h1>Career Path</h1>
+    <div id="container">
+      <div class="logo">Career Path Finder</div>
+
+      <div class="search-wrapper" id="searchWrapper">
+        <div class="search">
+          <input
+            id="searchInput"
+            placeholder="Enter job title..."
+            type="text"
+          />
+          <button id="searchBtn">Find Jobs</button>
+        </div>
       </div>
-      <div class="search">
-        <input placeholder="Enter job title..." type="text" size="32" />
-        <button>Find Jobs</button>
-      </div>
-    </header>
-    <main class="container">
-      <div></div>
-    </main>
-    <footer></footer>
+
+      <div id="results"></div>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
