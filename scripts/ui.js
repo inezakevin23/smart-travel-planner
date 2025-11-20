@@ -334,36 +334,16 @@ const UIService = {
     const cards = Array.from(grid.querySelectorAll(".card"));
 
     cards.sort((a, b) => {
-      // normalize values
       const nameA = a.querySelector(".card-title").textContent || "";
       const nameB = b.querySelector(".card-title").textContent || "";
       const ratingA = parseFloat(a.getAttribute("data-rating")) || 0;
       const ratingB = parseFloat(b.getAttribute("data-rating")) || 0;
       const reviewsA = parseInt(a.getAttribute("data-reviews")) || 0;
       const reviewsB = parseInt(b.getAttribute("data-reviews")) || 0;
-      const priceAraw = a.getAttribute("data-price") || "";
-      const priceBraw = b.getAttribute("data-price") || "";
-
-      // helper to map price symbols to numeric
-      const priceValue = (p) => {
-        if (!p) return 9999;
-        if (p === "Free") return 0;
-        if (p === "$") return 1;
-        if (p === "$$") return 2;
-        if (p === "$$$") return 3;
-        if (p === "$$$$") return 4;
-        // try numeric
-        const n = parseFloat(p);
-        return Number.isFinite(n) ? n : 9999;
-      };
 
       if (sortBy === "rating") return ratingB - ratingA;
       if (sortBy === "reviews") return reviewsB - reviewsA;
       if (sortBy === "name") return nameA.localeCompare(nameB);
-      if (sortBy === "price-low")
-        return priceValue(priceAraw) - priceValue(priceBraw);
-      if (sortBy === "price-high")
-        return priceValue(priceBraw) - priceValue(priceAraw);
       return 0;
     });
 

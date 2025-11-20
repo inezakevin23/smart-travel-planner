@@ -1,0 +1,159 @@
+const TravelPlannerApp = {
+  // Store current data for filtering/sorting
+  currentData: null,
+  currentDestination: "",
+
+  //  Initialize the application and is called when DOM is fully loaded
+  init: function () {
+    console.log("🚀 Travel Planner App Starting...");
+    UIService.init();
+    this.attachEventListeners();
+
+    console.log("✅ App Ready!");
+  },
+
+  attachEventListeners: function () {
+    const searchForm = document.getElementById("searchForm");
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      this.handleSearch();
+    });
+
+    // Filter: Minimum Rating
+    const filterRating = document.getElementById("filterRating");
+    filterRating.addEventListener("change", () => {
+      this.applyFilters();
+    });
+
+    // Filter: Budget Friendly
+    const filterPrice = document.getElementById("filterPrice");
+    filterPrice.addEventListener("change", () => {
+      this.applyFilters();
+    });
+
+    // Filter: Search within results
+    const searchFilter = document.getElementById("searchFilter");
+    searchFilter.addEventListener("input", () => {
+      this.applyFilters();
+    });
+
+    // Sort dropdown
+    const sortSelect = document.getElementById("sortBy");
+    if (sortSelect) {
+      sortSelect.addEventListener("change", (e) => {
+        UIService.sortCards(e.target.value);
+      });
+    }
+
+    // Reset filters button
+    const resetBtn = document.getElementById("resetFilters");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        this.resetFilters();
+      });
+    }
+  },
+
+  handleSearch: async function () {
+    const destination = document.getElementById("destination").value.trim();
+    const category = document.getElementById("category").value;
+
+    if (!destination) {
+      UIService.showError("Please enter a destination.");
+      return;
+    }
+    this.currentDestination = destination;
+    UIService.showLoading();
+    UIService.hideError();
+
+    try {
+      console.log(`🔍 Searching for: ${destination} (Category: ${category})`);
+
+      const data = await ApiService.fetchDestinationData(destination, category);
+
+      console.log("✅ Data received:", data);
+      this.currentData = data;
+
+      // Check if we got any results
+      const hasResults =
+        data.attractions.length > 0 ||
+        data.hotels.length > 0 ||
+        data.restaurants.length > 0;
+
+      if (!hasResults) {
+        UIService.showNoResults();
+        UIService.hideLoading();
+        return;
+      }
+      UIService.renderResults(data);
+
+      // Reset filters
+      this.resetFilters();
+
+      console.log("✅ Results rendered successfully!");
+    } catch (error) {
+      console.error("❌ Search error:", error);
+      UIService.showError(
+        error.message || "An error occurred while searching. Please try again."
+      );
+    }
+  },
+
+  /**
+   * Apply filters to current results
+   */
+  applyFilters: function () {
+    if (!this.currentData) return;
+
+    const minRating = document.getElementById("filterRating").checked
+      ? 4.0
+      : null;
+    const budgetOnly = document.getElementById("filterPrice").checked;
+    const searchText = document.getElementById("searchFilter").value.trim();
+
+    // Apply filters via UI Service
+    UIService.applyFilters({
+      minRating: minRating,
+      budgetOnly: budgetOnly,
+      searchText: searchText,
+    });
+
+    console.log("🔄 Filters applied:", { minRating, budgetOnly, searchText });
+  },
+  resetFilters: function () {
+    document.getElementById("filterRating").checked = false;
+    document.getElementById("filterPrice").checked = false;
+    document.getElementById("searchFilter").value = "";
+    this.applyFilters();
+
+    console.log("🔄 Filters reset");
+  },
+
+  // Export current results as JSON
+  exportResults: function () {
+    if (!this.currentData) {
+      alert("No data to export. Please search for a destination first.");
+      return;
+    }
+
+    const dataStr = JSON.stringify(this.currentData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${this.currentDestination.replace(
+      /\s+/g,
+      "_"
+    )}_travel_data.json`;
+    link.click();
+
+    console.log("💾 Data exported");
+  },
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  TravelPlannerApp.init();
+});
+
+window.TravelPlannerApp = TravelPlannerApp;
