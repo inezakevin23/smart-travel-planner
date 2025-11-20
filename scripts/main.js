@@ -14,28 +14,30 @@ const TravelPlannerApp = {
 
   attachEventListeners: function () {
     const searchForm = document.getElementById("searchForm");
-    searchForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      this.handleSearch();
-    });
+    if (searchForm) {
+      searchForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.handleSearch();
+      });
+    }
 
     // Filter: Minimum Rating
     const filterRating = document.getElementById("filterRating");
-    filterRating.addEventListener("change", () => {
-      this.applyFilters();
-    });
+    if (filterRating) {
+      filterRating.addEventListener("change", () => {
+        this.applyFilters();
+      });
+    }
 
-    // Filter: Budget Friendly
-    const filterPrice = document.getElementById("filterPrice");
-    filterPrice.addEventListener("change", () => {
-      this.applyFilters();
-    });
+    // Budget filter removed (no DOM element)
 
     // Filter: Search within results
     const searchFilter = document.getElementById("searchFilter");
-    searchFilter.addEventListener("input", () => {
-      this.applyFilters();
-    });
+    if (searchFilter) {
+      searchFilter.addEventListener("input", () => {
+        this.applyFilters();
+      });
+    }
 
     // Sort dropdown
     const sortSelect = document.getElementById("sortBy");
@@ -72,13 +74,26 @@ const TravelPlannerApp = {
       const data = await ApiService.fetchDestinationData(destination, category);
 
       console.log("✅ Data received:", data);
+
+      if (!data) {
+        UIService.showError("No data returned from API.");
+        UIService.hideLoading();
+        return;
+      }
+
       this.currentData = data;
 
-      // Check if we got any results
+      // Check if we got any results (tolerant if arrays are missing)
+      const attractions = Array.isArray(data.attractions)
+        ? data.attractions
+        : [];
+      const hotels = Array.isArray(data.hotels) ? data.hotels : [];
+      const restaurants = Array.isArray(data.restaurants)
+        ? data.restaurants
+        : [];
+
       const hasResults =
-        data.attractions.length > 0 ||
-        data.hotels.length > 0 ||
-        data.restaurants.length > 0;
+        attractions.length > 0 || hotels.length > 0 || restaurants.length > 0;
 
       if (!hasResults) {
         UIService.showNoResults();
@@ -105,25 +120,26 @@ const TravelPlannerApp = {
   applyFilters: function () {
     if (!this.currentData) return;
 
-    const minRating = document.getElementById("filterRating").checked
-      ? 4.0
-      : null;
-    const budgetOnly = document.getElementById("filterPrice").checked;
-    const searchText = document.getElementById("searchFilter").value.trim();
+    const ratingEl = document.getElementById("filterRating");
+    const searchEl = document.getElementById("searchFilter");
+
+    const minRating = ratingEl && ratingEl.checked ? 4.0 : null;
+    const searchText = searchEl ? searchEl.value.trim() : "";
 
     // Apply filters via UI Service
     UIService.applyFilters({
       minRating: minRating,
-      budgetOnly: budgetOnly,
       searchText: searchText,
     });
 
-    console.log("🔄 Filters applied:", { minRating, budgetOnly, searchText });
+    console.log("🔄 Filters applied:", { minRating, searchText });
   },
   resetFilters: function () {
-    document.getElementById("filterRating").checked = false;
-    document.getElementById("filterPrice").checked = false;
-    document.getElementById("searchFilter").value = "";
+    const ratingEl = document.getElementById("filterRating");
+    const searchEl = document.getElementById("searchFilter");
+
+    if (ratingEl) ratingEl.checked = false;
+    if (searchEl) searchEl.value = "";
     this.applyFilters();
 
     console.log("🔄 Filters reset");

@@ -164,7 +164,7 @@ const UIService = {
     return `
             <div class="card" data-rating="${item.rating}" data-reviews="${
       item.reviews || 0
-    }" data-price="${item.price}" data-type="${item.type}">
+    }" data-type="${item.type}">
                 ${photoHtml}
                 <div class="card-content">
                     <div class="card-header">
@@ -176,8 +176,7 @@ const UIService = {
                     <div class="card-body">
                         <p>${description}</p>
                         <div class="card-meta">
-                            <span>💰 ${priceDisplay}</span>
-                            <span>💬 ${item.reviews.toLocaleString()} reviews</span>
+                          <span>💬 ${item.reviews.toLocaleString()} reviews</span>
                         </div>
                         ${
                           item.address
@@ -268,7 +267,7 @@ const UIService = {
    * @param {Object} filters - Filter criteria
    */
   applyFilters: function (filters) {
-    const { minRating, budgetOnly, searchText } = filters;
+    const { minRating, searchText } = filters;
     const cards = document.querySelectorAll(".card");
 
     let visibleCount = 0;
@@ -282,11 +281,7 @@ const UIService = {
         if (cardRating < minRating) visible = false;
       }
 
-      // Budget filter
-      if (budgetOnly) {
-        const cardPrice = card.getAttribute("data-price");
-        if (cardPrice !== "$" && cardPrice !== "Free") visible = false;
-      }
+      // (price filter removed)
 
       // Search filter
       if (searchText) {
