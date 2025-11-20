@@ -3,27 +3,155 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Career Path Finder</title>
-    <link rel="stylesheet" href="./styles/styles.css" />
+    <meta
+      name="description"
+      content="Smart Travel Planner - Plan your perfect trip with comprehensive destination insights"
+    />
+    <meta
+      name="keywords"
+      content="travel, planning, destinations, hotels, attractions, restaurants"
+    />
+    <meta name="author" content="Ineza Kevin" />
+
+    <title>Smart Travel Planner - Discover Your Next Adventure</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/styles.css" />
   </head>
   <body>
-    <div id="container">
-      <div class="logo">Career Path Finder</div>
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Header Section -->
+      <header>
+        <h1>🌍 Smart Travel Planner</h1>
+        <p class="subtitle">
+          Discover amazing destinations with comprehensive travel insights
+        </p>
+      </header>
 
-      <div class="search-wrapper" id="searchWrapper">
-        <div class="search">
-          <input
-            id="searchInput"
-            placeholder="Enter job title..."
-            type="text"
-          />
-          <button id="searchBtn">Find Jobs</button>
+      <!-- Search Section -->
+      <div class="search-section">
+        <form class="search-form" id="searchForm">
+          <!-- Destination Input -->
+          <div class="form-group">
+            <label for="destination">🗺️ Destination</label>
+            <input
+              type="text"
+              id="destination"
+              name="destination"
+              placeholder="e.g., Paris, Tokyo, New York"
+              required
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- Category Select -->
+          <div class="form-group">
+            <label for="category">🔍 Category</label>
+            <select id="category" name="category">
+              <option value="all">All Information</option>
+              <option value="attractions">Attractions Only</option>
+              <option value="hotels">Hotels Only</option>
+              <option value="restaurants">Restaurants Only</option>
+            </select>
+          </div>
+
+          <!-- Sort Select -->
+          <div class="form-group">
+            <label for="sortBy">↕️ Sort</label>
+            <select id="sortBy" name="sortBy">
+              <option value="relevance">Relevance</option>
+              <option value="name">Alphabetical (A–Z)</option>
+              <option value="rating">Rating (High→Low)</option>
+              <option value="reviews">Reviews (High→Low)</option>
+              <option value="price-low">Price (Low→High)</option>
+              <option value="price-high">Price (High→Low)</option>
+            </select>
+          </div>
+
+          <!-- Search Button -->
+          <div class="form-group">
+            <button type="submit" id="searchBtn">Search Destination</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Filters Section (Hidden by default) -->
+      <div class="filters" id="filters">
+        <div class="filter-row">
+          <!-- Rating Filter -->
+          <div class="filter-item">
+            <label>
+              <input type="checkbox" id="filterRating" />
+              ⭐ Minimum Rating 4.0+
+            </label>
+          </div>
+
+          <!-- Price Filter -->
+          <div class="filter-item">
+            <label>
+              <input type="checkbox" id="filterPrice" />
+              💰 Budget Friendly Only
+            </label>
+          </div>
+
+          <!-- Search within results -->
+          <div class="filter-item">
+            <input
+              type="text"
+              id="searchFilter"
+              placeholder="🔎 Search within results..."
+            />
+          </div>
         </div>
       </div>
 
-      <div id="results"></div>
-    </div>
+      <!-- Loading State -->
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>✈️ Searching for the best travel information...</p>
+      </div>
 
-    <script src="script.js"></script>
+      <!-- Error Message -->
+      <div class="error" id="error"></div>
+
+      <!-- Results Section -->
+      <div class="results-section" id="results">
+        <!-- Initial Empty State -->
+        <div class="no-results">
+          <h2>👆 Start by searching for a destination</h2>
+          <p>
+            Get comprehensive information about attractions, hotels,
+            restaurants, and more!
+          </p>
+        </div>
+      </div>
+
+      <!-- Attribution Footer -->
+      <div class="attribution">
+        <p><strong>API Credits:</strong></p>
+        <p>
+          Travel Data:
+          <a
+            href="https://rapidapi.com/apidojo/api/travel-advisor"
+            target="_blank"
+            rel="noopener"
+            >Travel Advisor API</a
+          >
+          via RapidAPI
+        </p>
+        <p>Made with ❤️ for travelers worldwide</p>
+      </div>
+    </div>
+    <script src="scripts/config.js"></script>
+
+    <!-- 2. API Service (Data fetching) -->
+    <script src="scripts/api.js"></script>
+
+    <!-- 3. UI Service (Rendering) -->
+    <script src="scripts/ui.js"></script>
+
+    <!-- 4. Main Application (Orchestration) -->
+    <script src="scripts/main.js"></script>
   </body>
 </html>
