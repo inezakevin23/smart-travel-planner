@@ -276,7 +276,6 @@ const ApiService = {
       }
       await Promise.all(promises);
 
-      // Return the aggregated results
       return results;
     } catch (error) {
       console.error("Error fetching destination data:", error);
