@@ -3,27 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Smart Travel Planner - Plan your perfect trip with comprehensive destination insights"
-    />
-    <meta
-      name="keywords"
-      content="travel, planning, destinations, hotels, attractions, restaurants"
-    />
-    <meta name="author" content="Ineza Kevin" />
 
     <title>Smart Travel Planner - Discover Your Next Adventure</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="styles/styles.css" />
   </head>
   <body>
-    <!-- Main Container -->
     <div class="container">
-      <!-- Header Section -->
       <header>
-        <h1>🌍 Smart Travel Planner</h1>
+        <h1>Smart Travel Planner</h1>
         <p class="subtitle">
           Discover amazing destinations with comprehensive travel insights
         </p>
@@ -47,7 +35,7 @@
 
           <!-- Category Select -->
           <div class="form-group">
-            <label for="category">🔍 Category</label>
+            <label for="category">Category</label>
             <select id="category" name="category">
               <option value="all">All Information</option>
               <option value="attractions">Attractions Only</option>
@@ -64,8 +52,6 @@
               <option value="name">Alphabetical (A–Z)</option>
               <option value="rating">Rating (High→Low)</option>
               <option value="reviews">Reviews (High→Low)</option>
-              <option value="price-low">Price (Low→High)</option>
-              <option value="price-high">Price (High→Low)</option>
             </select>
           </div>
 
@@ -84,14 +70,6 @@
             <label>
               <input type="checkbox" id="filterRating" />
               ⭐ Minimum Rating 4.0+
-            </label>
-          </div>
-
-          <!-- Price Filter -->
-          <div class="filter-item">
-            <label>
-              <input type="checkbox" id="filterPrice" />
-              💰 Budget Friendly Only
             </label>
           </div>
 
@@ -140,18 +118,12 @@
           >
           via RapidAPI
         </p>
-        <p>Made with ❤️ for travelers worldwide</p>
+        <p>Made for travelers worldwide</p>
       </div>
     </div>
     <script src="scripts/config.js"></script>
-
-    <!-- 2. API Service (Data fetching) -->
     <script src="scripts/api.js"></script>
-
-    <!-- 3. UI Service (Rendering) -->
     <script src="scripts/ui.js"></script>
-
-    <!-- 4. Main Application (Orchestration) -->
     <script src="scripts/main.js"></script>
   </body>
 </html>
