@@ -132,7 +132,8 @@ server {
     listen [::]:80;
 
     # Server name
-    server_name smart-travel-planner.ineza.tech;
+    server_name smart-travel-planner.ineza.tech www.smart-travel-planner.ineza.tech;
+
     add_header X-Served-By $HOSTNAME;
 
     # Document root
@@ -197,25 +198,22 @@ sudo nano /etc/nginx/sites-available/smart-travel-planner
 ```nginx
 # Upstream block
 upstream travel_planner_backend {
-    # Load balancing method is round-robin by default
-    # Backend server 1
+    # Load balancing method: round-robin (default)
+
+    # Backend server 1 (Web01)
     server 54.234.228.94 max_fails=3 fail_timeout=30s;
 
-    # Backend server 2
+    # Backend server 2 (Web02)
     server 3.82.113.10 max_fails=3 fail_timeout=30s;
 
     # Keep connections alive for better performance
     keepalive 32;
 }
 
-# Main server block - handles incoming requests
+# Main server block
 server {
-    # Listen on port 80 (HTTP)
-    listen 80;
-    listen [::]:80;
-
     # Server name
-    server_name smart-travel-planner.ineza.tech;
+    server_name smart-travel-planner.ineza.tech www.smart-travel-planner.ineza.tech;
 
     # Access and error logs
     access_log /var/log/nginx/lb-access.log;
@@ -246,6 +244,34 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Connection "";
     }
+
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/smart-travel-planner.ineza.tech/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/smart-travel-planner.ineza.tech/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+
+}
+
+server {
+    if ($host = smart-travel-planner.ineza.tech) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+    if ($host = www.smart-travel-planner.ineza.tech) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+    listen 80;
+    listen [::]:80;
+    server_name smart-travel-planner.ineza.tech www.smart-travel-planner.ineza.tech;
+    return 404; # managed by Certbot
+
 
 }
 ```
@@ -349,9 +375,7 @@ smart-travel-planner/
 - Input validation on search queries
 - HTTPS ready
 
-### UFW configuration (commands run)
-
-Run these on each server (as root or with `sudo`) to apply the firewall rules used in this project:
+### UFW configuration on all servers
 
 ```bash
 sudo apt install ufw
