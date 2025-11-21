@@ -345,8 +345,25 @@ smart-travel-planner/
 
 - API keys stored in separate config file (not in Git)
 - Security headers enabled (X-Frame-Options, X-XSS-Protection)
+- **Firewall (UFW):** Configured UFW on all servers to allow only incoming connections on `22/tcp`, `80/tcp`, and `443/tcp`.
 - Input validation on search queries
 - HTTPS ready
+
+### UFW configuration (commands run)
+
+Run these on each server (as root or with `sudo`) to apply the firewall rules used in this project:
+
+```bash
+sudo apt install ufw
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+sudo ufw enable
+```
 
 ## Performance Optimizations
 
