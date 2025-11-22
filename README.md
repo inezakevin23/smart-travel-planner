@@ -287,10 +287,10 @@ sudo systemctl reload nginx
 ### Testing Deployment
 
 ```bash
-curl http://smart-travel-planner.ineza.tech
+curl https://smart-travel-planner.ineza.tech
 
 # Test load balancing (run multiple times)
-for i in {1..10}; do curl -s http://smart-travel-planner.ineza.tech | head -1; done
+curl -sI https://smart-travel-planner.ineza.tech | grep X-Served-By
 ```
 
 ## Testing
