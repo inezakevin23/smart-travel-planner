@@ -1,6 +1,6 @@
 # Smart Travel Planner
 
-A web application that helps users plan trips by aggregating travel information including attractions, hotels, restaurants, and weather data.
+A web application that helps users plan trips by aggregating travel information including attractions, hotels, and restaurants.
 
 ## Features
 
@@ -13,7 +13,7 @@ A web application that helps users plan trips by aggregating travel information 
 
 ## Live Demo
 
-- **Production URL:** http://smart-travel-planner.ineza.tech
+- **Production URL:** https://smart-travel-planner.ineza.tech
 - **Load Balancer:** 6866-lb-01, used Nginx round-robin between 2 servers
 - **Backend Servers:**
   - 6866-web-01
